@@ -1,0 +1,16 @@
+<svg width="300" height="100" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 25 75 
+           C 25 55, 45 50, 60 50 
+           C 65 30, 90 25, 110 30 
+           C 120 15, 150 10, 180 20 
+           C 200 10, 230 15, 250 30 
+           C 270 25, 285 40, 285 55 
+           C 295 55, 295 70, 285 75 
+           C 285 90, 265 90, 250 90 
+           L 50 90 
+           C 35 90, 25 85, 25 75 Z" fill="#ffffff" stroke="#cccccc" stroke-width="2" />
+
+  <!-- Inner shading -->
+  <path d="M 60 50 C 70 40, 90 38, 105 42" fill="none" stroke="#f0f0f0" stroke-width="4" stroke-linecap="round" />
+  <path d="M 180 20 C 200 15, 220 18, 235 28" fill="none" stroke="#f0f0f0" stroke-width="4" stroke-linecap="round" />
+</svg>
