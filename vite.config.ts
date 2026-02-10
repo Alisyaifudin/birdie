@@ -8,4 +8,5 @@ export default defineConfig({
 		open: true,
 	},
 	plugins: [tailwindcss()],
+	base: "./",
 });

@@ -1,4 +1,4 @@
-import { Move } from "../bird";
+import { Move } from "../bird/class";
 
 type Key = "ArrowUp" | "ArrowDown";
 type Listener = (key?: Key) => void;
@@ -34,13 +34,13 @@ export class Keyboard {
 	}
 }
 
-export function birdAdapter(key?: Key): Move | undefined {
+export function birdAdapter(key?: Key): Move {
 	switch (key) {
 		case "ArrowDown":
-			return "Down";
+			return "down";
 		case "ArrowUp":
-			return "Up";
+			return "up";
 		default:
-			return undefined;
+			return "idle";
 	}
 }
