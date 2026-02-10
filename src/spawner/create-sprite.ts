@@ -1,5 +1,5 @@
 import { Sprite, Texture } from "pixi.js";
-import { SCREEN_HEIGHT } from "../../lib/constants";
+import { SCREEN_HEIGHT } from "../lib/constants";
 import { SPAWN_X, SPAWN_X_DELTA, SPAWN_Y_PERCENT } from "./constants";
 
 export function createSprite(texture: Texture) {

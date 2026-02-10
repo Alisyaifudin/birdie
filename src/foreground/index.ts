@@ -8,7 +8,7 @@ export class Foreground {
 	delta: number;
 	constructor(textures: Texture[]) {
 		this.n = textures.length;
-		this.delta = (SCREEN_WIDTH * 2) / (this.n - 1);
+		this.delta = (SCREEN_WIDTH * 2) / this.n;
 		textures.forEach((texture, i) => {
 			const sprite = new Sprite(texture);
 			sprite.x = this.delta * i - SCREEN_WIDTH / 2;
@@ -20,8 +20,8 @@ export class Foreground {
 	onUpdate(dt: number) {
 		for (const sprite of this.sprites) {
 			sprite.x -= SPEED_LEVEL[1] * dt;
-			if (sprite.x < -(SCREEN_WIDTH / 2 + sprite.width / 2)) {
-				sprite.x = SCREEN_HEIGHT * 1.5 + sprite.width / 2;
+			if (sprite.x < -(SCREEN_WIDTH / 2)) {
+				sprite.x = SCREEN_HEIGHT * 2;
 			}
 		}
 	}

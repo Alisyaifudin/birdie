@@ -1,11 +1,11 @@
-import { AnimatedSprite, Rectangle, Texture } from "pixi.js";
+import { AnimatedSprite, Texture } from "pixi.js";
 import { MIN_SPEED, ROTATION_SPEED } from "./constants";
 import { ReactiveState } from "../lib/reactive-state";
 import { calcSpeed } from "./calc-speed";
 import { headBack } from "./head-back";
 import { createSprite } from "./create-sprite";
-import { createHitbox } from "./create-hitbox";
 import { SCREEN_HEIGHT } from "../lib/constants";
+import { RectCollision } from "../collision/hitbox";
 
 export type Move = "up" | "down" | "idle";
 
@@ -15,21 +15,22 @@ export class Bird {
 	private y: ReactiveState<number>;
 	private move: Move = "idle";
 	private rotation: ReactiveState<number>;
-	hitBox: Rectangle;
+	hitBox: RectCollision;
+	stop() {
+		this.sprite.stop();
+	}
 	constructor(textures: Texture[]) {
 		this.sprite = createSprite(textures);
-		const width = this.sprite.width * 0.5;
-		const height = this.sprite.height * 0.5;
-		this.hitBox = createHitbox({
+		this.hitBox = new RectCollision({
 			x: this.sprite.x,
 			y: this.sprite.y,
-			width,
-			height,
+			width: this.sprite.width * 0.5,
+			height: this.sprite.height * 0.5,
 		});
 
 		this.y = new ReactiveState(this.sprite.y, (y) => {
 			this.sprite.y = y;
-			this.hitBox.y = y - height / 2;
+			this.hitBox.y = y;
 		});
 		this.rotation = new ReactiveState(
 			this.sprite.rotation,

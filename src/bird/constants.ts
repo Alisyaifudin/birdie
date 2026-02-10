@@ -1,4 +1,4 @@
-export const BIRD_X = 10;
+export const BIRD_X = 50;
 export const MIN_SPEED = 3;
 export const FOOD_SPEED = 3;
 export const MAX_SPEED = 5;

@@ -1,5 +1,12 @@
 import { Assets, Texture } from "pixi.js";
-import { Food } from "./class";
+import { Obstacle } from "./obstacle";
+import { SPEED_LEVEL } from "../lib/constants";
+
+export class Food extends Obstacle {
+	constructor(texture: Texture) {
+		super(texture, SPEED_LEVEL[1]);
+	}
+}
 
 let texture: null | Texture = null;
 

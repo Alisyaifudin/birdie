@@ -1,18 +1,20 @@
-import { Rectangle, Sprite, Texture } from "pixi.js";
-import { ReactiveState } from "../../lib/reactive-state";
+import { Sprite, Texture } from "pixi.js";
 import { createSprite } from "./create-sprite";
-import { createHitbox } from "./create-hitbox";
-import { FOOD_SPEED } from "./constants";
+import { ReactiveState } from "../lib/reactive-state";
+import { RectCollision } from "../collision/hitbox";
 
-export class Food {
+export class Obstacle {
 	sprite: Sprite;
 	private x: ReactiveState<number>;
-	hitBox: Rectangle;
-	constructor(texture: Texture) {
+	hitBox: RectCollision;
+	constructor(
+		texture: Texture,
+		private readonly speed: number,
+	) {
 		this.sprite = createSprite(texture);
 		const width = this.sprite.width * 0.5;
 		const height = this.sprite.height * 0.5;
-		this.hitBox = createHitbox({
+		this.hitBox = new RectCollision({
 			x: this.sprite.x,
 			y: this.sprite.y,
 			width,
@@ -21,10 +23,11 @@ export class Food {
 
 		this.x = new ReactiveState(this.sprite.x, (x) => {
 			this.sprite.x = x;
-			this.hitBox.x = x - height / 2;
+			this.hitBox.x = x;
 		});
 	}
 	onUpdate(dt: number) {
-		this.x.val -= FOOD_SPEED * dt;
+		this.x.val -= this.speed * dt;
 	}
 }
+
