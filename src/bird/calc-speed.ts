@@ -16,3 +16,4 @@ export function calcSpeed({
 			return Math.max(MIN_SPEED, speed - ACC * dt);
 	}
 }
+

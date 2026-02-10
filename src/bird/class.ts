@@ -47,7 +47,7 @@ export class Bird {
 	private updateY(dt: number) {
 		if (this.rotation.val === 0) return;
 		this.speed = calcSpeed({ dt, isAcc: this.move !== "idle", speed: this.speed });
-		const y = this.y.val + Math.sin(this.rotation.val) * this.speed;
+		const y = this.y.val + Math.sin(this.rotation.val) * this.speed * dt;
 		if (y > SCREEN_HEIGHT - this.sprite.height / 2) {
 			this.y.val = SCREEN_HEIGHT - this.sprite.height / 2;
 			return;

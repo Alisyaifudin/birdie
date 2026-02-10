@@ -1,32 +1,32 @@
-import { Application, Container } from "pixi.js";
+import { Application } from "pixi.js";
 import "./global.css";
 import { getBird } from "./bird";
 import { birdAdapter, Keyboard } from "./input/keyboard";
 import { FoodSpawner } from "./food-spawner";
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./lib/constants";
+import { createContainer } from "./container";
+import { getForeground } from "./foreground";
+import { Score } from "./score";
 
 async function main() {
 	// Create a new application
 	const app = new Application();
 
 	// Initialize the application
-	await app.init({ background: "#1099bb", resizeTo: window });
+	await app.init({ background: "#1099bb", resizeTo: window, antialias: true });
 
 	// Append the application canvas to the document body
 	document.getElementById("app")!.appendChild(app.canvas);
 
-	const container = new Container();
-	container.width = SCREEN_WIDTH;
-	container.height = SCREEN_HEIGHT;
-	resizeListener(container);
+	const container = createContainer();
 	app.stage.addChild(container);
 
+	const [foreground, bird] = await Promise.all([getForeground(), getBird()]);
+	// foreground
+	foreground.sprites.forEach((s) => container.addChild(s));
+
 	// bird
-	const bird = await getBird();
 	container.addChild(bird.sprite);
 	const foodSpawner = new FoodSpawner(container);
-
-	// foreground
 
 	// input
 	const keyboard = new Keyboard();
@@ -35,36 +35,19 @@ async function main() {
 		bird.onMove(move);
 	});
 
+	// text
+	const score = new Score();
+	foodSpawner.signal.subscribe(() => {
+		score.inc();
+	});
+	container.addChild(score.scoreText);
+	container.addChild(score.highScoreText);
+
 	app.ticker.add((ticker) => {
 		bird.onUpdate(ticker.deltaTime);
 		foodSpawner.onUpdate(ticker.deltaTime, bird.hitBox);
+		foreground.onUpdate(ticker.deltaTime);
 	});
-}
-
-function resizeListener(container: Container) {
-    // Set pivot to center so scaling happens from middle
-    container.pivot.set(SCREEN_WIDTH / 2, 0);
-    
-    const update = () => {
-        const scale = calcRatio();
-        container.scale.set(scale);
-        // Now just center the pivot point
-        container.x = window.innerWidth / 2;
-    };
-    
-    update();
-    window.addEventListener("resize", update);
-}
-
-function calcRatio() {
-	// resize to width
-	const ratio = window.innerWidth / SCREEN_WIDTH;
-	const height = SCREEN_HEIGHT * ratio;
-	if (height < window.innerHeight) {
-		return ratio;
-	}
-	// resize to height
-	return window.innerHeight / SCREEN_HEIGHT;
 }
 
 main();

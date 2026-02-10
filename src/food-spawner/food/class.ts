@@ -1,5 +1,5 @@
 import { Rectangle, Sprite, Texture } from "pixi.js";
-import { ReactiveState } from "../lib/reactive-state";
+import { ReactiveState } from "../../lib/reactive-state";
 import { createSprite } from "./create-sprite";
 import { createHitbox } from "./create-hitbox";
 import { FOOD_SPEED } from "./constants";

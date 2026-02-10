@@ -1,6 +1,6 @@
 import { Container, Rectangle } from "pixi.js";
-import { createFood } from "./food";
-import { Food } from "./food/class";
+import { createFood } from "./plane";
+import { Food } from "./plane/class";
 import { DESTROY_THRESHOLD, SPAWN_RATE } from "./constants";
 import { Signal } from "../lib/signal";
 
