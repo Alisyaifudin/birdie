@@ -1,19 +1,19 @@
 import { Assets, Texture } from "pixi.js";
 import { Obstacle } from "./obstacle";
-import { SPEED_LEVEL } from "../lib/constants";
+import { ReactiveScreen } from "../lib/resize";
 
 export class Plane extends Obstacle {
-	constructor(texture: Texture) {
-		super(texture, SPEED_LEVEL[2]);
+	constructor(texture: Texture, screen: ReactiveScreen, speed: number) {
+		super(texture, screen, speed);
 	}
 }
 
 let texture: null | Texture = null;
 
-export async function createPlane() {
+export async function createPlane(screen: ReactiveScreen, speed: number) {
 	if (texture === null) {
-		texture = await Assets.load("assets/plane.svg");
+		texture = await Assets.load("/assets/plane.svg");
 	}
-	const food = new Plane(texture!);
+	const food = new Plane(texture!, screen, speed);
 	return food;
 }

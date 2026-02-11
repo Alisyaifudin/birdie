@@ -1,8 +1,9 @@
-import { SCREEN_WIDTH } from "../lib/constants";
-
 export const SPAWN_RATE_FOOD = 100;
+export const SPAWN_RATE_DELTA = 1;
+export const SPAWN_RATE_FOOD_MIN = 50;
 export const SPAWN_RATE_PLANE = 200;
+export const SPAWN_RATE_PLANE_MIN = 80;
 export const DESTROY_THRESHOLD = -50;
-export const SPAWN_X = SCREEN_WIDTH + 50;
-export const SPAWN_X_DELTA = 30;
-export const SPAWN_Y_PERCENT = 0.9;
+export const SPAWN_X_EXTEND = 70;
+export const SPAWN_X_DELTA = 50;
+export const SPAWN_Y_PADDING = 30;

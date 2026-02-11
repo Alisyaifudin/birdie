@@ -4,6 +4,8 @@ import { Signal } from "../lib/signal";
 import { createFood, Food } from "./food";
 import { createPlane, Plane } from "./plane";
 import { Obstacle } from "./obstacle";
+import { SPEED_LEVEL } from "../lib/constants";
+import { ReactiveScreen } from "../lib/resize";
 
 export class Spawner {
 	obstacles: Obstacle[] = [];
@@ -11,7 +13,15 @@ export class Spawner {
 		food: 0,
 		plane: 0,
 	};
-	constructor(private container: Container) {}
+	spawnRate = {
+		food: SPAWN_RATE_FOOD,
+		plane: SPAWN_RATE_PLANE,
+	};
+	speed = {
+		food: SPEED_LEVEL[1] as number,
+		plane: SPEED_LEVEL[2] as number,
+	};
+	constructor(private container: Container, private readonly screen: ReactiveScreen) {}
 	signal = {
 		add: new Signal<Obstacle>(),
 		delete: new Signal<Obstacle>(),
@@ -19,18 +29,18 @@ export class Spawner {
 	onUpdate(dt: number) {
 		this.duration.food += dt;
 		this.duration.plane += dt;
-		if (this.duration.food > SPAWN_RATE_FOOD) {
-			this.duration.food -= SPAWN_RATE_FOOD;
+		if (this.duration.food > this.spawnRate.food) {
+			this.duration.food -= this.spawnRate.food;
 			this.add("food");
 		}
-		if (this.duration.plane > SPAWN_RATE_PLANE) {
-			this.duration.plane -= SPAWN_RATE_PLANE;
+		if (this.duration.plane > this.spawnRate.plane) {
+			this.duration.plane -= this.spawnRate.plane;
 			this.add("plane");
 		}
 		this.move(dt);
 	}
 	private async add(kind: "food" | "plane") {
-		const obstacle = await createObstacle(kind);
+		const obstacle = await createObstacle(kind, this.screen, this.speed[kind]);
 		this.obstacles.push(obstacle);
 		this.container.addChild(obstacle.sprite);
 		this.signal.add.emit(obstacle);
@@ -57,11 +67,11 @@ export class Spawner {
 	}
 }
 
-export function createObstacle(kind: "food" | "plane") {
+export function createObstacle(kind: "food" | "plane",screen: ReactiveScreen, speed: number) {
 	switch (kind) {
 		case "food":
-			return createFood();
+			return createFood(screen, speed);
 		case "plane":
-			return createPlane();
+			return createPlane(screen, speed);
 	}
 }

@@ -1,7 +1,8 @@
 import { Sprite, Texture } from "pixi.js";
 import { createSprite } from "./create-sprite";
-import { ReactiveState } from "../lib/reactive-state";
 import { RectCollision } from "../collision/hitbox";
+import { ReactiveScreen } from "../lib/resize";
+import { ReactiveState } from "../lib/reactive-state";
 
 export class Obstacle {
 	sprite: Sprite;
@@ -9,9 +10,11 @@ export class Obstacle {
 	hitBox: RectCollision;
 	constructor(
 		texture: Texture,
+		screen: ReactiveScreen,
 		private readonly speed: number,
 	) {
-		this.sprite = createSprite(texture);
+		this.sprite = createSprite(texture, screen);
+		this.sprite.scale = 2;
 		const width = this.sprite.width * 0.5;
 		const height = this.sprite.height * 0.5;
 		this.hitBox = new RectCollision({
@@ -21,7 +24,13 @@ export class Obstacle {
 			height,
 		});
 
-		this.x = new ReactiveState(this.sprite.x, (x) => {
+		this.x = new ReactiveState(this.sprite.x);
+		screen.subscribe(({w, h}, old) => {
+			this.x.val = this.x.val/old.w * w;
+			this.sprite.y = this.sprite.y/old.h * h;
+			this.hitBox.y = this.sprite.y/old.h * h;
+		})
+		this.x.subscribe((x) => {
 			this.sprite.x = x;
 			this.hitBox.x = x;
 		});
@@ -30,4 +39,3 @@ export class Obstacle {
 		this.x.val -= this.speed * dt;
 	}
 }
-
